@@ -11,7 +11,7 @@ function SideBarOption({Icon, title, addChannelOption, id }) {
         const channelName = prompt("Enter the channel name:");
         if(channelName){
             db.collection("rooms").add({
-                name: channelName
+                name: channelName,
             });
         }
     };
@@ -28,7 +28,7 @@ function SideBarOption({Icon, title, addChannelOption, id }) {
         <SidebarOptionContainer
             onClick={addChannelOption ? addChannel : selectChannel}
         >
-            {Icon && <Icon fontSize="small" style={{padding: 10}}/>}
+            {Icon && <Icon fontSize="small" style={{padding: 10,color:"white"}}/>}
             {Icon ? (<h3>{title}</h3>):
                 (
                     <SideBarOptionChannel>
@@ -56,6 +56,9 @@ const SidebarOptionContainer = styled.div`
 
     > h3 {
         font-weight: 500;
+        font-family: "Lucida Console", "Courier New", monospace;
+        color: white;
+        text-decoration:none;
     }
 
     > h3> span {
@@ -67,5 +70,7 @@ const SidebarOptionContainer = styled.div`
 const SideBarOptionChannel = styled.h3`
     padding: 10px 0;
     font-weight: 300;
-    
+    >span {
+        text-decoration: none;
+    }
 `;

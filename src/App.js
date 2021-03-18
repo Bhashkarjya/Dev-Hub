@@ -14,6 +14,9 @@ import styled from "styled-components";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "./firebase";
 import Spinner from "react-spinkit"
+import HomeCP from "./components/HomeCP"
+import Blog from "./components/Blog/Blog"
+import OpenSource from "./components/OpenSource/OpenSource"
 
 function App() {
 
@@ -41,9 +44,12 @@ function App() {
             <AppBody>
               <SideBar />
               <Switch>
-                <Route path="/" exact>
+                <Route path="/" exact component={Chat}>
                   <Chat />
                 </Route>
+                <Route path="/cp" exact component={HomeCP}/>
+                <Route path="/opensource" exact component={OpenSource}/>
+                <Route path="/blogs" exact component={Blog} />
               </Switch>
             </AppBody>
         </>

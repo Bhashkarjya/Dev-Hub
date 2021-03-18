@@ -1,31 +1,31 @@
 import React from 'react'
 import styled from "styled-components"
 
-function Message({message, timestamp, user, userImage}) {
+function Message({message, count, user, userImage}) {
     return (
         <MessageContainer>
             <img src={userImage} alt=""/>
             <MessageInfo>
                 <h4>
-                    {user}{' '}
+                    {user}
                     <span>
-                        {new Date(timestamp?.toDate()).toUTCString()}
+                       {/* {dayjs.unix(timestamp?.seconds).format('YYYY-MM-DD HH:mm:ss')} {new Date(timestamp?.toDate()).toUTCString()} */}
                     </span>
                 </h4>
                 <p>{message}</p>
             </MessageInfo>
         </MessageContainer>
-    )
+    );
 }
 
-export default Message
+export default Message;
 
 const MessageContainer = styled.div`
     display:flex;
     align-items: center;
     padding: 20px;
 
-    >img {
+    > img {
         height: 50px;
         border-radius: 8px;
     }

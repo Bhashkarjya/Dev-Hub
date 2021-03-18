@@ -1,6 +1,6 @@
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
-import React,{useRef,useEffect} from 'react';
+import React,{useRef,useEffect,useState} from 'react';
 import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {selectRoomId} from "../features/appSlice";
@@ -14,10 +14,13 @@ function Chat() {
     const chatRef = useRef(null);
     const roomId = useSelector(selectRoomId);
     const [roomDetails] = useDocument(
-        roomId && db.collection("rooms").doc(roomId)
+        roomId && db.collection('rooms').doc(roomId)
     );
-    const [roomMessage, loading] = useCollection(
-        roomId && db.collection("rooms").doc(roomId).collection("messages").orderBy("timestamp","asc")
+
+    const [roomMessages, loading] = useCollection(
+        roomId && db.collection('rooms').doc(roomId).collection('messages')
+        // .orderBy('count','asc')
+        //.orderBy('timestamp','asc')
     );
 
     useEffect(() => {
@@ -26,15 +29,13 @@ function Chat() {
         });
     }, [roomId,loading]);
 
-
     return (
         <ChatContainer>
-            {roomDetails && roomMessage && (
-                <>
+            {roomDetails && roomMessages && (
+            <>
                 <Header>
                     <HeaderLeft>
-                        <h4><strong>#{roomDetails?.data().name}</strong></h4>
-                        <h5>{roomId}</h5>
+                        <h4><strong>#{roomDetails?.data().name}</strong></h4> 
                         <StarBorderOutlinedIcon />
                     </HeaderLeft>
                     <HeaderRight>
@@ -44,24 +45,25 @@ function Chat() {
                     </HeaderRight>
                 </Header>
                 <ChatMessages>
-                    {roomMessage?.docs.map((doc)=>{
-                        const {message, timestamp, user, userImage} = doc.data();
+                    {roomMessages?.docs.map(doc => {
+                        const { message,count,user,userImage } = doc.data();
                         return (
                             <Message 
                                 key={doc.id}
                                 message={message}
-                                timestamp={timestamp}
+                                // count={count}
                                 user={user}
                                 userImage={userImage}
                             />
                         );
                     })}
+                    
                     <ChatBottom ref={chatRef}/>
                 </ChatMessages> 
                 <ChatInput 
-                    chatRef={chatRef}
                     channelName={roomDetails?.data().name}
-                    channelID={roomId}
+                    channelId={roomId}
+                    chatRef={chatRef}
                 />
             </>
             )}
@@ -77,6 +79,8 @@ const Header = styled.div`
     padding: 20px;
     border-bottom: 1px solid lightgray;
 `;
+
+
 const HeaderLeft = styled.div`
     display: flex;
     align-items: center;

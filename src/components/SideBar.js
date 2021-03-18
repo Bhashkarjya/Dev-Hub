@@ -1,6 +1,7 @@
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import CreateIcon from "@material-ui/icons/Create";
 import React from 'react';
+import {BrowserRoute, Switch, Route, Link} from "react-router-dom";
 import styled from "styled-components";
 import SideBarOption from './SideBarOption';
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
@@ -16,15 +17,17 @@ import AddIcon from "@material-ui/icons/Add";
 import {db,auth} from "../firebase";
 import {useCollection} from "react-firebase-hooks/firestore";
 import {useAuthState} from "react-firebase-hooks/auth";
+import HomeCP from './HomeCP';
 
 function SideBar() {
     const [channels,loading,error] = useCollection(db.collection("rooms"));
     const [user] = useAuthState(auth);
+
     return (
         <SidebarContainer>
             <SidebarHeader>
                 <SidebarInfo>
-                    <h2>Slack DEVHUB</h2>
+                    <h2>Developers' Hub</h2>
                     <h3>
                         <FiberManualRecordIcon/>
                         {user.displayName}
@@ -32,18 +35,12 @@ function SideBar() {
                 </SidebarInfo>
                 <CreateIcon />
             </SidebarHeader>
-
-            <SideBarOption Icon={InsertCommentIcon} title="Threads" />
-            <SideBarOption Icon={InboxIcon} title="Mentions and Reactions" />
-            <SideBarOption Icon={DraftsIcon} title="Saved Items" />
-            <SideBarOption Icon={BookmarkBorderIcon} title="Channel Browser" />
-            <SideBarOption Icon={PeopleAltIcon} title="People and User Groups" />
-            <SideBarOption Icon={AppsIcon} title="Apps" />
-            <SideBarOption Icon={FileCopyIcon} title="File Browser" />
-            <SideBarOption Icon={ExpandLessIcon} title="Show Less" />
-
+            <Link to="/"><SideBarOption Icon={PeopleAltIcon} title="Home" /></Link>
+            <Link to="/cp"><SideBarOption Icon={InsertCommentIcon} title="Competitive Programming"/></Link>
+            <Link to="/opensource"><SideBarOption Icon={InboxIcon} title="World of Open Source" /></Link>
+            <Link to="/blogs"><SideBarOption Icon={BookmarkBorderIcon} title="Blogs" /></Link>
             <hr/>
-            <SideBarOption Icon={ExpandMoreIcon} title="Channels" />
+            <SideBarOption Icon={ExpandMoreIcon} title="Discussion Forums" />
             <hr/>
             <SideBarOption Icon={AddIcon} addChannelOption title="Add Channel" />
             {channels?.docs.map(doc => (

@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from "styled-components";
 import {Button} from "@material-ui/core";
 import firebase from "firebase";
+import {useDispatch} from "react-redux";
 import {db,auth} from "../firebase";
 import { useAuthState } from 'react-firebase-hooks/auth';
+import {increaseCount} from "../features/appSlice";
 
 function ChatInput({channelName, channelId, chatRef}) {
     const [input,setInput] = useState("");
@@ -14,11 +16,11 @@ function ChatInput({channelName, channelId, chatRef}) {
         if(!channelId){
             return false;
         }
-        console.log(channelName);
-        console.log(channelId);
+
         db.collection("rooms").doc(channelId).collection("messages").add({
             message: input,
-            timestamep: firebase.firestore.FieldValue.serverTimestamp(),
+            // count: count,
+            timestamep: firebase.firestore.Timestamp.fromDate(new Date()),
             user: user.displayName,
             userImage: user.photoURL
         });
@@ -26,8 +28,8 @@ function ChatInput({channelName, channelId, chatRef}) {
         chatRef.current.scrollIntoView({
             behavior: "smooth",
         });
-
         setInput("");
+        // incrementCount(count+1);
     };
 
     return (
@@ -46,7 +48,6 @@ function ChatInput({channelName, channelId, chatRef}) {
 }
 
 export default ChatInput;
-
 const ChatInputContainer = styled.div`
     
     border-radius: 20px;
