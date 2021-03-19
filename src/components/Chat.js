@@ -19,8 +19,7 @@ function Chat() {
 
     const [roomMessages, loading] = useCollection(
         roomId && db.collection('rooms').doc(roomId).collection('messages')
-        // .orderBy('count','asc')
-        //.orderBy('timestamp','asc')
+        .orderBy('timestamp','asc')
     );
 
     useEffect(() => {
@@ -46,12 +45,12 @@ function Chat() {
                 </Header>
                 <ChatMessages>
                     {roomMessages?.docs.map(doc => {
-                        const { message,count,user,userImage } = doc.data();
+                        const { message,timestamp,user,userImage } = doc.data();
                         return (
                             <Message 
                                 key={doc.id}
                                 message={message}
-                                // count={count}
+                                timestamp={timestamp}
                                 user={user}
                                 userImage={userImage}
                             />

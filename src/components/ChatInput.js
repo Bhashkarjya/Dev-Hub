@@ -2,10 +2,8 @@ import React, {useEffect, useState} from 'react'
 import styled from "styled-components";
 import {Button} from "@material-ui/core";
 import firebase from "firebase";
-import {useDispatch} from "react-redux";
 import {db,auth} from "../firebase";
 import { useAuthState } from 'react-firebase-hooks/auth';
-import {increaseCount} from "../features/appSlice";
 
 function ChatInput({channelName, channelId, chatRef}) {
     const [input,setInput] = useState("");
@@ -19,8 +17,7 @@ function ChatInput({channelName, channelId, chatRef}) {
 
         db.collection("rooms").doc(channelId).collection("messages").add({
             message: input,
-            // count: count,
-            timestamep: firebase.firestore.Timestamp.fromDate(new Date()),
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             user: user.displayName,
             userImage: user.photoURL
         });

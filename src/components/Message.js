@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from "styled-components"
 
-function Message({message, count, user, userImage}) {
+function Message({message, timestamp, user, userImage}) {
     return (
         <MessageContainer>
             <img src={userImage} alt=""/>
@@ -9,7 +9,7 @@ function Message({message, count, user, userImage}) {
                 <h4>
                     {user}
                     <span>
-                       {/* {dayjs.unix(timestamp?.seconds).format('YYYY-MM-DD HH:mm:ss')} {new Date(timestamp?.toDate()).toUTCString()} */}
+                        {new Date(timestamp?.toDate()).toUTCString()}
                     </span>
                 </h4>
                 <p>{message}</p>
